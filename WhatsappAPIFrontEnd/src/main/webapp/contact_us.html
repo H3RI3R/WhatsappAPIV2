@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 2px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .form-container h1 {
+            text-align: center;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="tel"],
+        .form-container textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+        }
+
+        .button {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+
+        .contact-details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Contact Us</h1>
+        <form action="contact_us_backend.php" method="post">
+            <label for="name">Name*</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="email">Email*</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <label for="phone">Mobile Number*</label>
+            <input type="tel" id="phone" name="phone" required>
+            <br>
+            <label for="message">Your message Here*</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <br>
+            <button class="button" type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="contact-details">
+        <p><strong>Head office:</strong> Sector 16A, Noida, UP 201301, India</p>
+        <p><strong>Email us:</strong> <a href="mailto:sales@scriza.in">sales@scriza.in</a></p>
+        <p><strong>Call us:</strong> Sales: +91-911 60 11 899</p>
+        <p><img src="cert1.png" alt="Certification Number QMS220756"></p>
+        <p><img src="cert2.png" alt="Certification Number ISMS220754"></p>
+    </div>
+</body>
+</html>

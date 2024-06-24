@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Subscriptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .subscriptions-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 2px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: left;
+        }
+
+        .subscriptions-container h1 {
+            text-align: center;
+        }
+
+        .subscriptions-container p {
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="subscriptions-container">
+        <h1>Subscriptions</h1>
+        <p>Choose the best plan for your needs:</p>
+        <p>Basic Plan - $9.99/month</p>
+        <p>Pro Plan - $19.99/month</p>
+        <p>Enterprise Plan - Contact us for pricing</p>
+        <button class="button" onclick="window.location.href='subscribe_basic.html';">Subscribe to Basic</button>
+        <button class="button" onclick="window.location.href='subscribe_pro.html';">Subscribe to Pro</button>
+        <button class="button" onclick="window.location.href='contact_us.html';">Contact for Enterprise</button>
+    </div>
+</body>
+</html>

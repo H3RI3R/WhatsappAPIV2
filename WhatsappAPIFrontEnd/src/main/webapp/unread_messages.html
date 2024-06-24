@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Unread Messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .messages-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 2px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: left;
+        }
+
+        .messages-container h1 {
+            text-align: center;
+        }
+
+        .message-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="messages-container">
+        <h1>Unread Messages</h1>
+        <div class="message-item">
+            <p><strong>From:</strong> John Doe</p>
+            <p><strong>Message:</strong> Hello, how are you?</p>
+        </div>
+        <div class="message-item">
+            <p><strong>From:</strong> Jane Smith</p>
+            <p><strong>Message:</strong> Are you available for a call?</p>
+        </div>
+        <button class="button" onclick="window.location.href='dashboard.html';">Back to Dashboard</button>
+    </div>
+</body>
+</html>
