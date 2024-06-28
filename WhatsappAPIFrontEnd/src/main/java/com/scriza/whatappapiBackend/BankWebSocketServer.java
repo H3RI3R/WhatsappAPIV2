@@ -74,7 +74,7 @@ public class BankWebSocketServer {
         }
 
         // Close the browser after saving the profile
-        driver.quit();
+//        driver.quit();
     }
 
     // Utility method to check if an element is present

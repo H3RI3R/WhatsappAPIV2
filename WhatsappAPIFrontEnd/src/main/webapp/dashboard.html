@@ -70,19 +70,19 @@
         <a href="contact_us.html">Contact Us</a>
         <a href="subscriptions.html">Subscriptions</a>
         <a href="dashboard.html">Dashboard</a>
-        <a href="dashboard.html">Profile</a>
+        <a id="profile-link" href="#">Profile</a>
     </div>
     
     <div class="content">
         <h1>Welcome to Dashboard</h1>
         <h2 id="welcome-message">Welcome, <span id="usernamePlaceholder"></span>! Here are some features we offer:</h2>
         <div class="button-container">
-            <a href="send_message.html" class="button">Send Message, Image, Text, Audio</a>
-            <a href="send_contact.html" class="button">Send Contact, Send Sticker</a>
-            <a href="forward_message.html" class="button">Forward Message</a>
-            <a href="unread_messages.html" class="button">Unread Messages</a>
-            <a href="send_location.html" class="button">Send Location</a>
-            <a href="send_bulk_messages.html" class="button">Send Bulk Messages Using Excel</a>
+            <a id="send-message-link" class="button" href="#">Send Message, Image, Text, Audio</a>
+            <a id="send-contact-link" class="button" href="#">Send Contact, Send Sticker</a>
+            <a id="forward-message-link" class="button" href="#">Forward Message</a>
+            <a id="unread-messages-link" class="button" href="#">Unread Messages</a>
+            <a id="send-location-link" class="button" href="#">Send Location</a>
+            <a id="send-bulk-messages-link" class="button" href="#">Send Bulk Messages Using Excel</a>
         </div>
     </div>
 
@@ -97,8 +97,18 @@
         const username = getUsernameFromUrl();
         if (username) {
             document.getElementById('usernamePlaceholder').innerText = username;
+
+            // Update navbar profile link
+            document.getElementById('profile-link').href = `profile.html?username=${encodeURIComponent(username)}`;
+
+            // Update button links
+            document.getElementById('send-message-link').href = `send_message.html?username=${encodeURIComponent(username)}`;
+            document.getElementById('send-contact-link').href = `send_contact.html?username=${encodeURIComponent(username)}`;
+            document.getElementById('forward-message-link').href = `forward_message.html?username=${encodeURIComponent(username)}`;
+            document.getElementById('unread-messages-link').href = `unread_messages.html?username=${encodeURIComponent(username)}`;
+            document.getElementById('send-location-link').href = `send_location.html?username=${encodeURIComponent(username)}`;
+            document.getElementById('send-bulk-messages-link').href = `send_bulk_messages.html?username=${encodeURIComponent(username)}`;
         } else {
-            // Handle case where username parameter is missing or empty
             document.getElementById('usernamePlaceholder').innerText = 'Guest';
         }
     </script>

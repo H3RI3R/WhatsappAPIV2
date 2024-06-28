@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .number {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .button {
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="home.html">Home</a>
+        <a href="contact_us.html">Contact Us</a>
+        <a href="subscriptions.html">Subscriptions</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="profile.html">Profile</a>
+    </div>
+
+    <div class="content">
+        <h1>User Profile</h1>
+        <h2 id="welcome-message">Welcome, <span id="usernamePlaceholder"></span>!</h2>
+        <div class="status">
+            <p id="statusMessage">Checking status...</p>
+        </div>
+        <div class="number" id="connectedNumber">
+            <!-- Connected number will be displayed here -->
+        </div>
+        <button id="startSessionButton" class="button" style="display: none;" onclick="startSession()">Start Session</button>
+        <button id="rescanQRButton" class="button" style="display: none;" onclick="rescanQR()">Rescan QR Code</button>
+        <button id="showNumberButton" class="button" style="display: none;" onclick="showConnectedNumber()">Show Connected Number</button>
+    </div>
+
+    <script>
+        // Function to parse URL parameters and extract username
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        // Start session by redirecting to ScanQR page
+        function startSession() {
+            const username = getUsernameFromUrl();
+            window.location.href = `scanQR.html?username=${encodeURIComponent(username)}`;
+        }
+
+        // Rescan QR code by redirecting to ScanQR page
+        function rescanQR() {
+            const username = getUsernameFromUrl();
+            window.location.href = `scanQR.html?username=${encodeURIComponent(username)}`;
+        }
+
+        // Show connected number by requesting backend to open Chrome profile
+        function showConnectedNumber() {
+            const username = getUsernameFromUrl();
+            console.log(`Requesting connected number for username: ${username}`);
+            fetch(`http://localhost:8080/WhatsappAPIFrontEnd/showConnectedNumber?username=${username}`)
+                .then(response => {
+                    console.log(`Response status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    if (data.success) {
+                        document.getElementById('connectedNumber').innerText = `Connected number: ${data.number}`;
+                    } else {
+                        alert('Failed to retrieve connected number.');
+                    }
+                })
+                .catch(error => {
+                    alert('Error retrieving connected number.');
+                    console.error('Error:', error);
+                });
+        }
+
+        // Fetch user status
+        function fetchStatus() {
+            const username = getUsernameFromUrl();
+            fetch(`http://localhost:8080/WhatsappAPIFrontEnd/checkStatus?username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('statusMessage').innerText = `Status: ${data.status}`;
+                    if (data.status === 'closed') {
+                        document.getElementById('startSessionButton').style.display = 'block';
+                        document.getElementById('rescanQRButton').style.display = 'none';
+                        document.getElementById('showNumberButton').style.display = 'none';
+                    } else if (data.status === 'active') {
+                        document.getElementById('startSessionButton').style.display = 'none';
+                        document.getElementById('rescanQRButton').style.display = 'block';
+                        document.getElementById('showNumberButton').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('statusMessage').innerText = 'Error checking status';
+                    console.error('Error:', error);
+                });
+        }
+
+        // Update welcome message with username
+        const username = getUsernameFromUrl();
+        if (username) {
+            document.getElementById('usernamePlaceholder').innerText = username;
+            fetchStatus();
+        } else {
+            document.getElementById('usernamePlaceholder').innerText = 'Guest';
+            document.getElementById('statusMessage').innerText = 'No username provided';
+        }
+    </script>
+</body>
+</html>
