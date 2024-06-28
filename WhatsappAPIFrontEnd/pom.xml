@@ -19,6 +19,17 @@
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
             <version>3.0.0</version>
         </dependency>
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-server</artifactId>
+    <version>9.4.44.v20210927</version>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-servlet</artifactId>
+    <version>9.4.44.v20210927</version>
+</dependency>
+
 
         <!-- MySQL Connector -->
         <dependency>
@@ -33,6 +44,7 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
 
         <!-- Apache Commons IO -->
         <dependency>

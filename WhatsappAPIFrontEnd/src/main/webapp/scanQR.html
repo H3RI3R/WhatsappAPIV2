@@ -59,8 +59,15 @@
                 return;
             }
 
-            fetch('http://localhost:8080/WhatsappAPIFrontEnd/startQrScanning')
-                .then(response => response.text())
+            const username = getUsernameFromUrl();
+
+            fetch(`http://localhost:8080/WhatsappAPIFrontEnd/startQrScanning?username=${encodeURIComponent(username)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
                 .then(data => console.log(data))
                 .catch(error => console.error('Error starting QR scanning:', error));
 
@@ -69,10 +76,28 @@
             ws.onmessage = function(event) {
                 if (event.data === 'LOGIN_SUCCESS') {
                     alert('You have successfully logged in with this number: ' + phoneNumber);
-                    window.location.href = 'dashboard.html';
+                    // Redirect to dashboard with username parameter
+                    window.location.href = `dashboard.html?username=${encodeURIComponent(username)}`;
                 }
             };
         }
+
+        // Function to parse URL parameters and extract username
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        // Update welcome message with username
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = getUsernameFromUrl();
+            if (username) {
+                document.getElementById('usernamePlaceholder').innerText = username;
+            } else {
+                // Handle case where username parameter is missing or empty
+                document.getElementById('usernamePlaceholder').innerText = 'Guest';
+            }
+        });
     </script>
 </head>
 <body>
@@ -86,7 +111,8 @@
         <br>
         <button class="button" onclick="startQrScanning()">Start QR Scanning</button>
         <br>
-        <button class="button" onclick="window.location.href='dashboard.html';">Go to Dashboard</button>
+        <!-- Directly link to dashboard with username parameter -->
+        <a href="dashboard.html?username=ritzz" class="button">Go to Dashboard</a>
     </div>
 </body>
 </html>

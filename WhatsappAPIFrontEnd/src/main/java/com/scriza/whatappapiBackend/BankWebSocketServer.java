@@ -14,22 +14,23 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 public class BankWebSocketServer {
     private static final String SCREENSHOT_PATH = "C:\\Users\\H3RI3R\\git\\WhatsappApI\\WhatsappAPI\\Screenshots\\QRCODE.png";
     private static final String HTML_FILE_PATH = "C:\\Users\\H3RI3R\\git\\WhatsappApI\\WhatsappAPI\\src\\main\\webapp\\index.html";
+    private static final String CHROME_PROFILE_BASE_PATH = "E:\\Chrome Profile Testing\\";
 
     public static void main(String[] args) {
         // Main method implementation, can be kept or modified based on your application structure
     }
 
-    public static void startQrScanning() throws IOException, InterruptedException {
-        // Set Chrome WebDriver path
+    public static void startQrScanning(String username) throws IOException, InterruptedException {
         System.setProperty("webdriver.chrome.driver", "C:/selenium WebDriver/chromedriver-win64/chromedriver.exe");
-
+        int count =  0;
         // Configure Chrome options
         ChromeOptions options = new ChromeOptions();
+        
         options.addArguments("--remote-allow-origins=*");
+        options.addArguments("user-data-dir=" + CHROME_PROFILE_BASE_PATH + username);
 
         // Start Chrome WebDriver
         ChromeDriver driver = new ChromeDriver(options);
@@ -54,7 +55,12 @@ public class BankWebSocketServer {
                     WebElement refreshElement = driver.findElement(By.xpath("//span[@data-icon='refresh-large']"));
                     refreshElement.click(); // Refresh the page if necessary
                 }
+                count +=1;
                 System.out.println("An error occurred while taking the screenshot: " + e.getMessage());
+                if (count ==5) {
+                	driver.quit();
+                	break;
+                }
             }
 
             // Check for login success
@@ -66,6 +72,9 @@ public class BankWebSocketServer {
 
             Thread.sleep(2000); // Wait for 2 seconds before retrying
         }
+
+        // Close the browser after saving the profile
+        driver.quit();
     }
 
     // Utility method to check if an element is present

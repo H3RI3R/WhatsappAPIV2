@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
         body {
@@ -69,11 +70,12 @@
         <a href="contact_us.html">Contact Us</a>
         <a href="subscriptions.html">Subscriptions</a>
         <a href="dashboard.html">Dashboard</a>
+        <a href="dashboard.html">Profile</a>
     </div>
     
     <div class="content">
         <h1>Welcome to Dashboard</h1>
-        <h2>Mr. [Name], you have successfully logged in. Here are some features we offer:</h2>
+        <h2 id="welcome-message">Welcome, <span id="usernamePlaceholder"></span>! Here are some features we offer:</h2>
         <div class="button-container">
             <a href="send_message.html" class="button">Send Message, Image, Text, Audio</a>
             <a href="send_contact.html" class="button">Send Contact, Send Sticker</a>
@@ -83,5 +85,22 @@
             <a href="send_bulk_messages.html" class="button">Send Bulk Messages Using Excel</a>
         </div>
     </div>
+
+    <script>
+        // Function to parse URL parameters and extract username
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        // Update welcome message with username
+        const username = getUsernameFromUrl();
+        if (username) {
+            document.getElementById('usernamePlaceholder').innerText = username;
+        } else {
+            // Handle case where username parameter is missing or empty
+            document.getElementById('usernamePlaceholder').innerText = 'Guest';
+        }
+    </script>
 </body>
 </html>
