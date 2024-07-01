@@ -12,6 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public class SendImage {
@@ -74,18 +77,31 @@ public class SendImage {
             // Click on send button
             WebElement sendButton = driver.findElement(By.xpath("//span[@data-icon='send']"));
             sendButton.click();
+            
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         } finally {
             // Close the browser
 //            driver.quit();
+     
+                // Close the browser
+                 driver.quit();
+
+                // Delete the file
+                try {
+                    Path path = Paths.get(filePath);
+                    Files.deleteIfExists(path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("Failed to delete the file: " + filePath, e);
+                }
+            }
+        }
+
+        // Method to set the clipboard data
+        private static void setClipboardData(String string) {
+            StringSelection stringSelection = new StringSelection(string);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
         }
     }
-
-    // Method to set the clipboard data
-    private static void setClipboardData(String string) {
-        StringSelection stringSelection = new StringSelection(string);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-    }
-}

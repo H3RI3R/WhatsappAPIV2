@@ -80,18 +80,19 @@
         </form>
     </div>
     <div class="form-container">
-        <h1>Send Image or Video</h1>
+        <h1>Send Image or Video or audio</h1>
         <form id="sendImageForm" method="post" action="send_image" enctype="multipart/form-data">
             <input type="hidden" id="username" name="username" value="ritzz">
             <label for="recipient">Recipient:</label>
             <input type="text" id="recipient" name="recipient" required>
             <br>
-            <label for="image">Image/Video:</label>
+            <label for="image">Image/Video/Audio:</label>
             <input type="file" id="image" name="file" accept="image/*,video/*" required>
             <br>
-            <button class="button" type="submit">Send Image/Video</button>
+            <button class="button" type="submit">Send Image/Video/Audio</button>
         </form>
     </div>
+    
     
     
 </div>
@@ -106,7 +107,7 @@
         const username = getUsernameFromUrl();
         document.getElementById('username').value = username || '';
 
-        // Handle form submission
+        // Handle Send Message form submission
         document.getElementById('sendMessageForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -122,6 +123,30 @@
             })
             .catch(error => {
                 alert('Error sending message.');
+                console.error('Error:', error);
+            });
+        });
+
+        // Handle Send Image or Video form submission
+        document.getElementById('sendImageForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: this.method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Image/Video sent successfully.');
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                alert('Error sending image/video.');
                 console.error('Error:', error);
             });
         });
