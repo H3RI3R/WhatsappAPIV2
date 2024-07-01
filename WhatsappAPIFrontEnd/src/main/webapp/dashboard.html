@@ -14,6 +14,10 @@
         .navbar {
             background-color: #333;
             overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
         }
         
         .navbar a {
@@ -44,6 +48,30 @@
             align-items: center;
         }
 
+        .logout-button {
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            height: auto;
+            line-height: 20px; /* Ensure vertical alignment */
+        }
+
+        .logout-button:hover {
+            background-color: #3e8e41;
+        }
+
+        .logout-button-container {
+            margin-left: auto;
+        }
+
         .button {
             background-color: #04AA6D;
             color: white;
@@ -65,14 +93,18 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
+<div class="navbar">
+    <div>
         <a href="home.html">Home</a>
         <a href="contact_us.html">Contact Us</a>
         <a href="subscriptions.html">Subscriptions</a>
         <a href="dashboard.html">Dashboard</a>
-        <a id="profile-link" href="#">Profile</a>
+        <a href="profile.html" id="profile-link">Profile</a>
     </div>
-    
+    <div class="logout-button-container">
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+</div>
     <div class="content">
         <h1>Welcome to Dashboard</h1>
         <h2 id="welcome-message">Welcome, <span id="usernamePlaceholder"></span>! Here are some features we offer:</h2>
@@ -87,30 +119,64 @@
     </div>
 
     <script>
-        // Function to parse URL parameters and extract username
-        function getUsernameFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('username');
+    function logout() {
+        // Clear session storage
+        sessionStorage.clear();
+        // Clear cookies
+        document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+                .replace(/^ +/, "")
+                .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+
+        // Redirect to login page with a loggedOut flag
+        window.location.href = 'login.html?loggedOut=true';
+
+        // Prevent back navigation
+        setTimeout(() => {
+            window.history.pushState(null, null, window.location.href);
+            window.addEventListener('popstate', function () {
+                window.history.pushState(null, null, window.location.href);
+            });
+        }, 0);
+    }
+
+    // Function to parse URL parameters and extract username
+    function getUsernameFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('username');
+    }
+
+    // Update welcome message with username
+    const username = getUsernameFromUrl();
+    if (username) {
+        document.getElementById('usernamePlaceholder').innerText = username;
+
+        // Update navbar profile link
+        const profileLink = document.getElementById('profile-link');
+        if (profileLink) {
+            profileLink.href = `profile.html?username=${encodeURIComponent(username)}`;
         }
 
-        // Update welcome message with username
-        const username = getUsernameFromUrl();
-        if (username) {
-            document.getElementById('usernamePlaceholder').innerText = username;
+        // Update button links
+        document.getElementById('send-message-link').href = `send_message.html?username=${encodeURIComponent(username)}`;
+        document.getElementById('send-contact-link').href = `send_contact.html?username=${encodeURIComponent(username)}`;
+        document.getElementById('forward-message-link').href = `forward_message.html?username=${encodeURIComponent(username)}`;
+        document.getElementById('unread-messages-link').href = `unread_messages.html?username=${encodeURIComponent(username)}`;
+        document.getElementById('send-location-link').href = `send_location.html?username=${encodeURIComponent(username)}`;
+        document.getElementById('send-bulk-messages-link').href = `send_bulk_messages.html?username=${encodeURIComponent(username)}`;
+    } else {
+        document.getElementById('usernamePlaceholder').innerText = 'Guest';
+    }
 
-            // Update navbar profile link
-            document.getElementById('profile-link').href = `profile.html?username=${encodeURIComponent(username)}`;
-
-            // Update button links
-            document.getElementById('send-message-link').href = `send_message.html?username=${encodeURIComponent(username)}`;
-            document.getElementById('send-contact-link').href = `send_contact.html?username=${encodeURIComponent(username)}`;
-            document.getElementById('forward-message-link').href = `forward_message.html?username=${encodeURIComponent(username)}`;
-            document.getElementById('unread-messages-link').href = `unread_messages.html?username=${encodeURIComponent(username)}`;
-            document.getElementById('send-location-link').href = `send_location.html?username=${encodeURIComponent(username)}`;
-            document.getElementById('send-bulk-messages-link').href = `send_bulk_messages.html?username=${encodeURIComponent(username)}`;
-        } else {
-            document.getElementById('usernamePlaceholder').innerText = 'Guest';
+    function checkLoggedOut() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('loggedOut') === 'true') {
+            alert('You have been logged out.');
         }
+    }
+
+    checkLoggedOut();
     </script>
 </body>
 </html>

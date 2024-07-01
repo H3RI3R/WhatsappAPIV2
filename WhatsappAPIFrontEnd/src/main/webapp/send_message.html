@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Send Message</title>
@@ -55,20 +55,76 @@
         .button:hover {
             background-color: #3e8e41;
         }
+                .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
+ <div class="container">
     <div class="form-container">
         <h1>Send Message</h1>
-        <form action="dashboard.html" method="post">
+        <form id="sendMessageForm" method="post" action="SendMessage">
+            <input type="hidden" id="username" name="username" value="">
             <label for="recipient">Recipient:</label>
             <input type="text" id="recipient" name="recipient" required>
-            <br>
+            <br> 
             <label for="message">Message:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
             <br>
             <button class="button" type="submit">Send</button>
         </form>
     </div>
+    <div class="form-container">
+        <h1>Send Image or Video</h1>
+        <form id="sendImageForm" method="post" action="send_image" enctype="multipart/form-data">
+            <input type="hidden" id="username" name="username" value="ritzz">
+            <label for="recipient">Recipient:</label>
+            <input type="text" id="recipient" name="recipient" required>
+            <br>
+            <label for="image">Image/Video:</label>
+            <input type="file" id="image" name="file" accept="image/*,video/*" required>
+            <br>
+            <button class="button" type="submit">Send Image/Video</button>
+        </form>
+    </div>
+    
+    
+</div>
+    <script>
+        // Function to parse URL parameters and extract username
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        // Set the username input field value
+        const username = getUsernameFromUrl();
+        document.getElementById('username').value = username || '';
+
+        // Handle form submission
+        document.getElementById('sendMessageForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: this.method,
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(`Response: ${data}`);
+            })
+            .catch(error => {
+                alert('Error sending message.');
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

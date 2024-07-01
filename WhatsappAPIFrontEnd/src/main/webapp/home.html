@@ -13,15 +13,18 @@
         .navbar {
             background-color: #333;
             overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
         }
         
         .navbar a {
-            float: left;
-            display: block;
             color: white;
             text-align: center;
             padding: 14px 20px;
             text-decoration: none;
+            line-height: 20px; /* Ensure vertical alignment */
         }
         
         .navbar a:hover {
@@ -49,14 +52,56 @@
             display: block;
             margin: 20px auto;
         }
+        
+        .button {
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button:hover {
+            background-color: #3e8e41;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logout-button-container {
+            margin-left: auto;
+        }
+
+        .navbar .button {
+            margin: 0;
+            padding: 14px 20px;
+            height: auto;
+            line-height: 20px; /* Ensure vertical alignment */
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="contact_us.html">Contact Us</a>
-        <a href="subscriptions.html">Subscriptions</a>
-        <a href="dashboard.html">Dashboard</a>
+        <div>
+            <a href="home.html">Home</a>
+            <a href="contact_us.html">Contact Us</a>
+            <a href="subscriptions.html">Subscriptions</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="logout-button-container">
+            <button class="button" onclick="logout()">Logout</button>
+        </div>
     </div>
     
     <div class="content">
@@ -103,5 +148,10 @@
         <h2>About Us</h2>
         <p>We at Scriza are experts in software development, starting from scratch and building it from the ground up. We understand that not all projects are the same, and that's why we take the time to get to know you and your project before we begin.</p>
     </div>
+    <script>
+    function logout() {
+        // Perform any necessary cleanup, such as clearing cookies or session storage
+        window.location.href = 'login.html';
+    }</script>
 </body>
 </html>

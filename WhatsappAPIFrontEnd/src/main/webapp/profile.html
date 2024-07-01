@@ -69,17 +69,53 @@
         .button:hover {
             background-color: #3e8e41;
         }
+        .logout-button {
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    height: auto;
+    line-height: 20px; /* Ensure vertical alignment */
+}
+
+.logout-button:hover {
+    background-color: #3e8e41;
+}
+
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.logout-button-container {
+    margin-left: auto;
+}
     </style>
 </head>
 <body>
-    <div class="navbar">
+  <div class="navbar">
+    <div>
         <a href="home.html">Home</a>
         <a href="contact_us.html">Contact Us</a>
         <a href="subscriptions.html">Subscriptions</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="profile.html">Profile</a>
     </div>
-
+    <div class="logout-button-container">
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+</div>
     <div class="content">
         <h1>User Profile</h1>
         <h2 id="welcome-message">Welcome, <span id="usernamePlaceholder"></span>!</h2>
@@ -95,6 +131,10 @@
     </div>
 
     <script>
+    function logout() {
+        // Perform any necessary cleanup, such as clearing cookies or session storage
+        window.location.href = 'login.html';
+    }
         // Function to parse URL parameters and extract username
         function getUsernameFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
