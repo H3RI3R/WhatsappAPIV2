@@ -1,39 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Send Contact</title>
+    <title>Send Contact and Sticker</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
         }
 
         .form-container {
+            text-align: center;
             background-color: #ffffff;
             padding: 20px;
             border: 2px solid #cccccc;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .form-container h1 {
-            margin-bottom: 20px;
-        }
-
-        .form-container label {
+        label {
             display: block;
             margin-bottom: 10px;
         }
 
-        .form-container input[type="text"], .form-container input[type="email"] {
+        input[type="text"], input[type="file"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
@@ -59,23 +63,138 @@
         .button:hover {
             background-color: #3e8e41;
         }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Send Contact</h1>
-        <form action="send_contact_backend.php" method="post">
-            <label for="contactName">Contact Name:</label>
-            <input type="text" id="contactName" name="contactName" required>
-            <br>
-            <label for="contactNumber">Contact Number:</label>
-            <input type="text" id="contactNumber" name="contactNumber" required>
-            <br>
-            <label for="contactEmail">Contact Email:</label>
-            <input type="email" id="contactEmail" name="contactEmail">
-            <br>
-            <button class="button" type="submit">Send Contact</button>
-        </form>
+    <div class="container">
+        <div class="form-container">
+            <h1>Send Contact</h1>
+            <form id="sendContactForm" method="post" action="send_contact">
+                <input type="hidden" id="username" name="username" value="">
+                <label for="recipient">Recipient Number:</label>
+                <input type="text" id="recipient" name="recipient" required>
+                <label for="contactNumber">Contact Number:</label>
+                <input type="text" id="contactNumber" name="contactNumber" required>
+                <label for="contactName">Contact Name:</label>
+                <input type="text" id="contactName" name="contactName" required>
+                <br>
+                <button class="button" type="submit">Send Contact</button>
+            </form>
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+
+        <div class="form-container">
+            <h1>Send Sticker</h1>
+<form id="sendStickerForm" method="post" action="send_sticker" enctype="multipart/form-data">
+
+                <input type="hidden" id="usernameSticker" name="username" value="">
+                <label for="recipientSticker">Recipient Number:</label>
+                <input type="text" id="recipientSticker" name="recipient" required>
+                <label for="stickerFile">Select Sticker:</label>
+                <input type="file" id="stickerFile" name="stickerFile" accept="image/*" required>
+                <br>
+                <button class="button" type="submit">Send Sticker</button>
+            </form>
+            <div id="statusStickerMessage" class="status-message"></div>
+        </div>
     </div>
+    <script>
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        const username = getUsernameFromUrl();
+        document.getElementById('username').value = username || '';
+        document.getElementById('usernameSticker').value = username || '';
+
+        document.getElementById('sendContactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const statusMessage = document.getElementById('statusMessage');
+            const messages = [
+                "Please wait while we process...",
+                "Connecting to the server...",
+                "Connected",
+                `Sending the contact to ${formData.get('recipient')}...`,
+                "Processing..."
+            ];
+            let messageIndex = 0;
+
+            function updateStatusMessage() {
+                if (messageIndex < messages.length) {
+                    statusMessage.textContent = messages[messageIndex];
+                    messageIndex++;
+                }
+            }
+
+            const statusInterval = setInterval(updateStatusMessage, 2000);
+
+            fetch(this.action, {
+                method: this.method,
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(statusInterval);
+                alert(`Response: ${data.message}`);
+                statusMessage.textContent = "";
+            })
+            .catch(error => {
+                clearInterval(statusInterval);
+                alert('Error sending contact.');
+                console.error('Error:', error);
+                statusMessage.textContent = "";
+            });
+        });
+
+        document.getElementById('sendStickerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const statusMessage = document.getElementById('statusStickerMessage');
+            const messages = [
+                "Please wait while we process...",
+                "Connecting to the server...",
+                "Connected",
+                `Sending the sticker to ${formData.get('recipient')}...`,
+                "Processing..."
+            ];
+            let messageIndex = 0;
+
+            function updateStatusMessage() {
+                if (messageIndex < messages.length) {
+                    statusMessage.textContent = messages[messageIndex];
+                    messageIndex++;
+                }
+            }
+
+            const statusInterval = setInterval(updateStatusMessage, 2000);
+
+            fetch(this.action, {
+                method: this.method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(statusInterval);
+                alert(`Response: ${data.message}`);
+                statusMessage.textContent = "";
+            })
+            .catch(error => {
+                clearInterval(statusInterval);
+                alert('Error sending sticker.');
+                console.error('Error:', error);
+                statusMessage.textContent = "";
+            });
+        });
+    </script>
 </body>
 </html>

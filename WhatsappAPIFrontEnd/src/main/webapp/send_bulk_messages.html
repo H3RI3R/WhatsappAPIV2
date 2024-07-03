@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Send Bulk Messages Using Excel</title>
+    <title>Upload Excel File</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             height: 100vh;
-            text-align: center;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
 
         .form-container {
+            text-align: center;
             background-color: #ffffff;
             padding: 20px;
             border: 2px solid #cccccc;
@@ -25,27 +24,18 @@
             width: 300px;
         }
 
-        .form-container h1 {
-            text-align: center;
-        }
-
-        .form-container label {
+        label {
             display: block;
             margin-bottom: 10px;
         }
 
-        .form-container input[type="file"],
-        .form-container textarea {
+        input[type="file"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #cccccc;
             border-radius: 4px;
             font-size: 16px;
-        }
-
-        .form-container textarea {
-            resize: vertical;
         }
 
         .button {
@@ -60,7 +50,6 @@
             cursor: pointer;
             border-radius: 4px;
             transition: background-color 0.3s ease;
-            width: 100%;
         }
 
         .button:hover {
@@ -69,17 +58,27 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Send Bulk Messages</h1>
-        <form action="send_bulk_messages_backend.php" method="post" enctype="multipart/form-data">
+   <div class="form-container">
+        <h1>Upload Excel File</h1>
+        <form action="SendBulkMessagesServlet" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="username" name="username" value="">
             <label for="excel-file">Upload Excel File*</label>
             <input type="file" id="excel-file" name="excel-file" accept=".xlsx, .xls" required>
             <br>
             <label for="message">Message*</label>
             <textarea id="message" name="message" rows="4" required></textarea>
             <br>
-            <button class="button" type="submit">Send Messages</button>
+            <button class="button" type="submit">Upload and Send</button>
         </form>
     </div>
+    <script>
+        function getUsernameFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('username');
+        }
+
+        const username = getUsernameFromUrl();
+        document.getElementById('username').value = username || '';
+    </script>
 </body>
 </html>
