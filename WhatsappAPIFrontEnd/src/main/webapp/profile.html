@@ -69,38 +69,39 @@
         .button:hover {
             background-color: #3e8e41;
         }
+
         .logout-button {
-    background-color: #04AA6D;
-    color: white;
-    border: none;
-    padding: 14px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    height: auto;
-    line-height: 20px; /* Ensure vertical alignment */
-}
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            height: auto;
+            line-height: 20px; /* Ensure vertical alignment */
+        }
 
-.logout-button:hover {
-    background-color: #3e8e41;
-}
+        .logout-button:hover {
+            background-color: #3e8e41;
+        }
 
-.navbar {
-    background-color: #333;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-}
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
 
-.logout-button-container {
-    margin-left: auto;
-}
+        .logout-button-container {
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>
@@ -131,10 +132,11 @@
     </div>
 
     <script>
-    function logout() {
-        // Perform any necessary cleanup, such as clearing cookies or session storage
-        window.location.href = 'login.html';
-    }
+        function logout() {
+            // Perform any necessary cleanup, such as clearing cookies or session storage
+            window.location.href = 'login.html';
+        }
+
         // Function to parse URL parameters and extract username
         function getUsernameFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -157,6 +159,30 @@
         function showConnectedNumber() {
             const username = getUsernameFromUrl();
             console.log(`Requesting connected number for username: ${username}`);
+            
+            // Sequence of status messages
+            const statusMessages = [
+                'Connected number ...',
+                'Connecting to server, please wait ...',
+                'Connected!',
+                'Got the number ...',
+                'Sending back to client ...'
+            ];
+
+            let currentMessageIndex = 0;
+            const statusMessageElement = document.getElementById('statusMessage');
+            const intervalId = setInterval(() => {
+                if (currentMessageIndex < statusMessages.length) {
+                    statusMessageElement.innerText = statusMessages[currentMessageIndex];
+                    currentMessageIndex++;
+                } else {
+                    clearInterval(intervalId);
+                    fetchConnectedNumber(username);
+                }
+            }, 2000);
+        }
+
+        function fetchConnectedNumber(username) {
             fetch(`http://localhost:8080/WhatsappAPIFrontEnd/showConnectedNumber?username=${username}`)
                 .then(response => {
                     console.log(`Response status: ${response.status}`);
@@ -165,7 +191,7 @@
                 .then(data => {
                     console.log('Response data:', data);
                     if (data.success) {
-                        document.getElementById('connectedNumber').innerText = `Connected number: ${data.number}`;
+                        document.getElementById('connectedNumber').innerText = `Connected number: ${data.number} this number is connected to the Account.`;
                     } else {
                         alert('Failed to retrieve connected number.');
                     }

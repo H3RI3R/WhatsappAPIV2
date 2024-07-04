@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -36,7 +37,10 @@ public class LoginServlet extends HttpServlet {
                 jsonResponse.put("message", "Password is incorrect.");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             } else {
-            	 jsonResponse.put("scanQR", "http://localhost:8080/WhatsappAPIFrontEnd/scanQR.html");
+                HttpSession session = request.getSession();
+                session.setAttribute("username", username);
+                
+                jsonResponse.put("scanQR", "http://localhost:8080/WhatsappAPIFrontEnd/scanQR.html");
                 jsonResponse.put("message", "You have successfully logged in as " + username);
                 response.setStatus(HttpServletResponse.SC_OK);
             }
