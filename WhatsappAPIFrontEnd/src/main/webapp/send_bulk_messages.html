@@ -14,6 +14,11 @@
             font-family: Arial, sans-serif;
         }
 
+        .container {
+            display: flex;
+            gap: 20px; /* Space between the forms */
+        }
+
         .form-container {
             text-align: center;
             background-color: #ffffff;
@@ -58,18 +63,27 @@
     </style>
 </head>
 <body>
-   <div class="form-container">
-        <h1>Upload Excel File</h1>
-        <form action="SendBulkMessagesServlet" method="post" enctype="multipart/form-data">
-            <input type="hidden" id="username" name="username" value="">
-            <label for="excel-file">Upload Excel File*</label>
-            <input type="file" id="excel-file" name="excel-file" accept=".xlsx, .xls" required>
-            <br>
-            <label for="message">Message*</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            <br>
-            <button class="button" type="submit">Upload and Send</button>
-        </form>
+    <div class="container">
+        <div class="form-container">
+            <h1>Broadcast the Message</h1>
+            <form id="bulk-message-form" action="SendBulkMessagesServlet" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="bulk-username" name="username" value="">
+                <label for="bulk-excel-file">Upload Excel File*</label>
+                <input type="file" id="bulk-excel-file" name="excel-file" accept=".xlsx, .xls" required>
+                <br>
+                <button class="button" type="submit">Upload and Send</button>
+            </form>
+        </div>
+        <div class="form-container">
+            <h1>Send Individual Message</h1>
+            <form id="individual-message-form" action="SendIndividualMessagesServlet" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="individual-username" name="username" value="">
+                <label for="individual-excel-file">Upload Excel File*</label>
+                <input type="file" id="individual-excel-file" name="excel-file" accept=".xlsx, .xls" required>
+                <br>
+                <button class="button" type="submit">Upload and Send</button>
+            </form>
+        </div>
     </div>
     <script>
         function getUsernameFromUrl() {
@@ -78,7 +92,8 @@
         }
 
         const username = getUsernameFromUrl();
-        document.getElementById('username').value = username || '';
+        document.getElementById('bulk-username').value = username || '';
+        document.getElementById('individual-username').value = username || '';
     </script>
 </body>
 </html>
